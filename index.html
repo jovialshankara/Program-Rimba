@@ -14,4 +14,19 @@ window.addEventListener('error',function(e){
   var box=document.getElementById('app');
   if(box) box.innerHTML='<div style="max-width:760px;margin:40px auto;padding:20px;font-family:system-ui"><h2>Program Rimba belum bisa dimuat</h2><p>JavaScript mengalami error.</p><pre style="white-space:pre-wrap;background:#f3f4f6;padding:12px;border-radius:12px">'+String(e.message||e.error||'Unknown error')+'</pre><p style="color:#6b7280">Screenshot bagian ini kalau muncul, lalu kirim ke ChatGPT.</p></div>';
 });
-</script><script src="app.js?v=2"></script></body></html>
+</script><div id="installRimba" style="display:none;position:fixed;left:16px;right:16px;bottom:82px;z-index:40;max-width:728px;margin:auto"><button id="installRimbaBtn" style="width:100%;border:0;border-radius:14px;padding:12px 14px;background:#111827;color:#fff;font-weight:800;box-shadow:0 6px 20px #1114">📲 Instal Program Rimba</button></div>
+<script>
+(function(){
+  var deferred=null, box=document.getElementById('installRimba'), btn=document.getElementById('installRimbaBtn');
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault(); deferred=e; if(box) box.style.display='block';
+  });
+  if(btn) btn.addEventListener('click',async function(){
+    if(!deferred) return;
+    deferred.prompt();
+    try { await deferred.userChoice; } catch(_) {}
+    deferred=null; if(box) box.style.display='none';
+  });
+  window.addEventListener('appinstalled',function(){ if(box) box.style.display='none'; deferred=null; });
+})();
+</script><script src="app.js?v=3"></script></body></html>
